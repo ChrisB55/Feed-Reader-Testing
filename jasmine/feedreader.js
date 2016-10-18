@@ -72,18 +72,27 @@ $(function() {
 
          });
 
-        it('menu element toggles on click', function() {
-            $ ('.menu-icon-link').click();
-            expect ($('body').hasClass('menu-hidden')).not.toBe(true);
-        });
+
 
          /* TODO: Write a test that ensures the menu changes
           * visibility when the menu icon is clicked. This test
           * should have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
+        it('menu element toggles on click', function() {
+            $ ('.menu-icon-link').click();
+            expect ($('body').hasClass('menu-hidden')).not.toBe(true);
+        });
    });
     /* TODO: Write a new test suite named "Initial Entries" */
+
+    describe ("Initial Entries", function() {
+          beforeEach(function(done) {
+            loadFeed(0,done);
+
+    });
+
+
 
         /* TODO: Write a test that ensures when the loadFeed
          * function is called and completes its work, there is at least
@@ -91,11 +100,37 @@ $(function() {
          * Remember, loadFeed() is asynchronous so this test will require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
+         it('.feed container has at least a single .entry element', function(){
+            expect($('.feed .entry').length).toBeGreaterThan(0);
+        });
 
-    /* TODO: Write a new test suite named "New Feed Selection"
+});
+    /* TODO: Write a new test suite named "New Feed Selection" */
+    describe ('New Feed Selection', function() {
+
+        var oldFeeds;
+
+        beforeEach(function(done) {
+            loadFeed(0, function(){
+                oldFeeds = $('.feed').html();
+                loadFeed(1,function() {
+                    done();
+                });
+            });
+        });
+
+
 
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+         it('loadFeed fucntion actually changes', function(done) {
+
+            var newFeeds = $('.feed').html();
+            expect(newFeeds).not.toEqual(oldFeeds);
+            done();
+        });
+    });
+
 }());
